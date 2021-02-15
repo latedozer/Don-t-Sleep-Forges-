@@ -25,7 +25,7 @@ public class NoSleep {
         PlayerEntity player = event.getPlayer();
         if (player2.world.getDimensionKey() == World.OVERWORLD) {
             player.sendStatusMessage(new StringTextComponent("You're too terrified to sleep"), true);
-            Minecraft.getInstance().player.sendChatMessage("/spawnpoint");
+            player2.func_242111_a(World.OVERWORLD, player.getPosition(), (float) 0.0, true, false);
             event.setResult(PlayerEntity.SleepResult.NOT_POSSIBLE_HERE);
         }
     }

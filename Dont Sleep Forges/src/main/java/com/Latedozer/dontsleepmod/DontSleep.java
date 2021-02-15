@@ -1,7 +1,9 @@
 package com.Latedozer.dontsleepmod;
 
 
+import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod("dontsleep")
 public class DontSleep {
     public int tries = 0;
+    private CommandSource playerc;
+
     public DontSleep() {
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -28,9 +32,11 @@ public class DontSleep {
     }
     @SubscribeEvent
     public void event(PlayerSleepInBedEvent event) {
+
         ServerPlayerEntity player2 = (ServerPlayerEntity) event.getPlayer();
         if (player2.world.getDimensionKey() == World.OVERWORLD) {
             PlayerEntity player = event.getPlayer();
+            playerc = player.getCommandSource();
             if (tries >= 2) {
                 player.sendStatusMessage(new StringTextComponent("Your sleepiness consumes you. You know you won't wake up"), true);
             }
@@ -39,7 +45,7 @@ public class DontSleep {
                 ++tries;
                 player.sendStatusMessage(new StringTextComponent("You know you shouldn't lay down, they always come back"), true);
             }
-            Minecraft.getInstance().player.sendChatMessage("/spawnpoint");
+            player2.func_242111_a(World.OVERWORLD, player.getPosition(), (float) 0.0, true, false);
         }
     }
 
